@@ -1,0 +1,562 @@
+/* ================= NAVBAR ================= */
+
+html, body {
+    overflow-x: hidden;
+    max-width: 100%;
+}
+
+.navbar {
+
+    position: sticky;
+
+    top: 0;
+
+    width: 100%;
+
+    height: 76px;
+
+    background: var(--navbar);
+
+    border-bottom: 1px solid var(--border);
+
+    z-index: 1000;
+
+    transition: background var(--transition);
+}
+
+
+.navbar-inner {
+
+    max-width: 1400px;
+
+    margin: 0 auto;
+
+    height: 100%;
+
+    padding: 0 30px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 24px;
+
+    min-width: 0;
+}
+
+
+/* LOGO */
+
+.logo-area {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    flex-shrink: 0;
+
+    min-width: 0;
+}
+
+
+.logo-icon {
+
+    width: 42px;
+    height: 42px;
+
+    border-radius: 13px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+
+    color: white;
+
+    font-size: 18px;
+}
+
+
+.logo-text h2 {
+
+    font-size: 18px;
+
+    font-weight: 800;
+}
+
+
+.logo-text h2 span {
+    color: var(--primary);
+}
+
+
+.logo-text p {
+
+    color: var(--text-light);
+
+    font-size: 10px;
+
+    margin-top: 2px;
+}
+
+
+/* NAV LINKS (horizontal, desktop) */
+
+.navbar-nav {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 4px;
+
+    margin-left: 10px;
+
+    min-width: 0;
+
+    overflow-x: auto;
+
+    scrollbar-width: none; /* Firefox - hide scrollbar */
+}
+
+.navbar-nav::-webkit-scrollbar {
+    display: none; /* Chrome/Safari - hide scrollbar */
+}
+
+
+.nav-item {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    padding: 10px 14px;
+
+    border-radius: 10px;
+
+    color: var(--text-light);
+
+    font-size: 13px;
+
+    font-weight: 500;
+
+    white-space: nowrap;
+
+    flex-shrink: 0;
+
+    transition: var(--transition);
+}
+
+
+.nav-item i {
+
+    width: 16px;
+
+    text-align: center;
+
+    font-size: 13px;
+}
+
+
+.nav-item:hover {
+
+    background: var(--surface-2);
+
+    color: var(--primary);
+}
+
+
+.nav-item.active {
+
+    background: rgba(124, 92, 255, 0.12);
+
+    color: var(--primary);
+
+    font-weight: 700;
+}
+
+
+/* RIGHT SIDE ACTIONS */
+
+.navbar-actions {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 18px;
+
+    margin-left: auto;
+
+    flex-shrink: 0;
+
+    min-width: 0;
+}
+
+
+.navbar-divider {
+
+    width: 1px;
+
+    height: 28px;
+
+    background: var(--border);
+
+    flex-shrink: 0;
+}
+
+
+/* THEME BUTTON */
+
+.theme-btn {
+
+    width: 40px;
+    height: 40px;
+
+    border: 1px solid var(--border);
+
+    background: var(--surface-2);
+
+    color: var(--text);
+
+    border-radius: 11px;
+
+    flex-shrink: 0;
+
+    transition: var(--transition);
+}
+
+
+.theme-btn:hover {
+
+    color: var(--primary);
+
+    border-color: var(--primary);
+}
+
+
+/* PROFILE */
+
+.profile-mini {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    padding: 6px 10px 6px 6px;
+
+    border-radius: 12px;
+
+    flex-shrink: 0;
+
+    transition: var(--transition);
+}
+
+
+.profile-mini:hover {
+
+    background: rgba(124, 92, 255, 0.12);
+}
+
+
+.profile-avatar {
+
+    width: 39px;
+    height: 39px;
+
+    border-radius: 50%;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+
+    color: white;
+
+    font-weight: 700;
+
+    flex-shrink: 0;
+}
+
+
+.profile-info {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 2px;
+}
+
+
+.profile-info strong {
+    font-size: 12px;
+}
+
+
+.profile-info span {
+
+    color: var(--text-light);
+
+    font-size: 10px;
+}
+
+
+.logout {
+    color: var(--text-light);
+}
+
+.logout:hover {
+    color: var(--expense);
+}
+
+
+/* ================= AUTH BUTTONS (Sign In / Get Started / Logout) ================= */
+
+.nav-auth-btn {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    padding: 10px 18px;
+
+    border-radius: 10px;
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+    white-space: nowrap;
+
+    flex-shrink: 0;
+
+    border: none;
+
+    cursor: pointer;
+
+    transition: var(--transition);
+}
+
+.login-btn {
+
+    background: var(--surface-2);
+
+    color: var(--text);
+
+    border: 1px solid var(--border);
+}
+
+.login-btn:hover {
+
+    color: var(--primary);
+
+    border-color: var(--primary);
+}
+
+.get-started-btn {
+
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+
+    color: #fff;
+}
+
+.get-started-btn:hover {
+
+    opacity: .92;
+
+    transform: translateY(-1px);
+}
+
+.logout-form-desktop {
+
+    display: flex;
+
+    flex-shrink: 0;
+}
+
+.logout-btn {
+
+    background: var(--surface-2);
+
+    color: var(--text-light);
+
+    border: 1px solid var(--border);
+}
+
+.logout-btn:hover {
+
+    color: var(--expense);
+
+    border-color: var(--expense);
+}
+
+.logout-btn span {
+
+    display: none;
+}
+
+@media (min-width: 1301px) {
+
+    .logout-btn span {
+
+        display: inline;
+    }
+}
+
+
+/* ================= MOBILE HAMBURGER BUTTON ================= */
+/* Hidden by default on large screens — the full nav is shown instead */
+
+.menu-btn {
+
+    display: none;
+
+    width: 40px;
+    height: 40px;
+
+    border: 1px solid var(--border);
+
+    background: var(--surface-2);
+
+    color: var(--text);
+
+    border-radius: 10px;
+
+    flex-shrink: 0;
+}
+
+
+/* ================= MOBILE DROPDOWN PANEL ================= */
+
+.navbar-dropdown {
+
+    display: none;
+
+    flex-direction: column;
+
+    gap: 4px;
+
+    background: var(--navbar);
+
+    border-bottom: 1px solid var(--border);
+
+    padding: 12px 20px 16px;
+}
+
+
+.navbar-dropdown.open {
+    display: flex;
+}
+
+
+.navbar-dropdown .nav-item {
+
+    padding: 12px 14px;
+}
+
+
+.navbar-dropdown-divider {
+
+    border-top: 1px solid var(--border);
+
+    margin: 8px 0;
+}
+
+
+/* =========================================================
+   RESPONSIVE — this is the "big screen = full nav,
+   small screen = hamburger" switch
+   ========================================================= */
+
+@media (max-width: 1300px) {
+
+    .navbar-nav {
+
+        display: none;
+    }
+
+    .menu-btn {
+
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+
+@media (max-width: 850px) {
+
+    .navbar-inner {
+
+        padding: 0 20px;
+    }
+
+    .logo-text p {
+
+        display: none;
+    }
+}
+
+
+@media (max-width: 600px) {
+
+    .profile-info {
+
+        display: none;
+    }
+}
+
+
+@media (max-width: 420px) {
+
+    .navbar-divider {
+
+        display: none;
+    }
+}
+
+
+/* ================= MOBILE LOGOUT BUTTON ================= */
+
+.logout-form-mobile {
+
+    width: 100%;
+}
+
+
+.navbar-dropdown .logout-item {
+
+    width: 100%;
+
+    background: none;
+
+    border: 0;
+
+    text-align: left;
+
+    font: inherit;
+
+    cursor: pointer;
+}
+
+
+.navbar-dropdown .logout-item:hover {
+
+    background: var(--expense-bg);
+
+    color: var(--expense);
+}
