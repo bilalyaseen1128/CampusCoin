@@ -3,13 +3,18 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Category;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Transaction extends Model
 {
+    // Soft delete: the row stays in the table (deleted_at is set), so the
+    // full history is retained, as the SRS requires.
+    use SoftDeletes;
+
     protected $fillable = [
         'user_id',
         'category_id',
+        'recurring_id',
         'description',
         'type',
         'amount',
@@ -25,4 +30,9 @@ class Transaction extends Model
     {
         return $this->belongsTo(Category::class);
     }
-}   
+
+    public function recurringRule()
+    {
+        return $this->belongsTo(RecurringTransaction::class, 'recurring_id');
+    }
+}

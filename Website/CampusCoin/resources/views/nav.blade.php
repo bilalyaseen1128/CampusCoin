@@ -231,3 +231,17 @@
 
 })();
 </script>
+
+@auth
+<script>
+    // Back/Forward button se aaye to page dobara server se mangwao.
+    // Logout ho chuka ho to auth middleware login par bhej dega.
+    window.addEventListener("pageshow", function (e) {
+        var nav = performance.getEntriesByType("navigation")[0];
+
+        if (e.persisted || (nav && nav.type === "back_forward")) {
+            window.location.reload();
+        }
+    });
+</script>
+@endauth

@@ -4,16 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Budget;
 use App\Models\Category;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 
 class BudgetController extends Controller
 {
-    /**
-     * Categories the logged-in user may use:
-     * default ones (user_id = NULL) + their own custom ones.
-     */
     private function availableCategories()
     {
         return Category::where(function ($q) {
@@ -23,14 +20,9 @@ class BudgetController extends Controller
             ->orderBy('name');
     }
 
-    /**
-     * Value stored in the `month` column for the current month.
-     * Adjust to match your column type (check with: DESCRIBE budgets;):
-     * Your column is DATE, so the first day of the month is stored (e.g. 2026-09-01).
-     */
     private function currentMonth()
     {
-        return now()->startOfMonth()->toDateString(); // e.g. 2026-09-01
+        return now()->startOfMonth()->toDateString(); // e.g. 2026-10-01
     }
 
     private function rules(): array
@@ -52,14 +44,13 @@ class BudgetController extends Controller
         $categories = $this->availableCategories()->get();
 
         $budgets = Budget::with('category')
-            ->where('user_id', auth()->id())   // remove this line if budgets has no user_id column
+            ->where('user_id', auth()->id())
             ->where('month', $this->currentMonth())
             ->get();
 
         // Expense transactions of this month, summed per category.
-        // They are deducted from each budget automatically.
         $txSpent = DB::table('transactions')
-            ->where('user_id', auth()->id())   // remove if transactions has no user_id column
+            ->where('user_id', auth()->id())
             ->where('type', 'expense')
             ->whereDate('transaction_date', '>=', now()->startOfMonth()->toDateString())
             ->whereDate('transaction_date', '<=', now()->endOfMonth()->toDateString())
@@ -68,7 +59,10 @@ class BudgetController extends Controller
             ->pluck('total', 'category_id');
 
         $budgets->each(function ($budget) use ($txSpent) {
-            $budget->setAttribute('tx_spent', (float) ($txSpent[$budget->category_id] ?? 0));
+            $tx = (float) ($txSpent[$budget->category_id] ?? 0);
+            $budget->setAttribute('tx_spent', $tx);
+            // manual spending + transactions
+            $budget->setAttribute('total_spent', (float) $budget->amount_spent + $tx);
         });
 
         return view('budget-goal', compact('categories', 'budgets'));
@@ -78,37 +72,64 @@ class BudgetController extends Controller
     {
         $data = $request->validate($this->rules());
 
-        // One budget per category: saving again updates the limit instead of failing
-        $budget = Budget::updateOrCreate(
-            [
-                'user_id'     => auth()->id(),  // remove if budgets has no user_id column
-                'category_id' => $data['category_id'],
-                'month'       => $this->currentMonth(),
-            ],
-            [
-                'limit_amount' => $data['limit_amount'],
-                'amount_spent' => $data['amount_spent'] ?? 0,
-            ]
-        );
+        $budget = Budget::firstOrNew([
+            'user_id'     => auth()->id(),
+            'category_id' => $data['category_id'],
+            'month'       => $this->currentMonth(),
+        ]);
+
+        if ($budget->exists) {
+            // purana limit + naya limit
+            $budget->limit_amount = (float) $budget->limit_amount + (float) $data['limit_amount'];
+        } else {
+            $budget->limit_amount = $data['limit_amount'];
+            $budget->amount_spent = 0;
+        }
+
+        $budget->save();
 
         if ($request->expectsJson()) {
             return response()->json($budget->load('category'), 201);
         }
 
-        return redirect()->route('budgets.goal')->with('success', 'Budget saved.');
+        return redirect()->route('budgets.goal')->with('success', 'Budget added.');
     }
 
     public function update(Request $request, Budget $budget)
     {
-        abort_if($budget->user_id !== auth()->id(), 403);  // remove if budgets has no user_id column
+        abort_if($budget->user_id !== auth()->id(), 403);
 
         $data = $request->validate($this->rules());
 
-        $budget->update([
-            'category_id'  => $data['category_id'],
-            'limit_amount' => $data['limit_amount'],
-            'amount_spent' => $data['amount_spent'] ?? $budget->amount_spent,
-        ]);
+        $exists = Budget::where('user_id', auth()->id())
+            ->where('category_id', $data['category_id'])
+            ->where('month', $budget->month)
+            ->where('id', '!=', $budget->id)
+            ->exists();
+
+        if ($exists) {
+            $message = 'This category already has a budget this month.';
+
+            if ($request->expectsJson()) {
+                return response()->json(['message' => $message], 422);
+            }
+
+            return back()->withErrors(['category_id' => $message]);
+        }
+
+        try {
+            $budget->update([
+                'category_id'  => $data['category_id'],
+                'limit_amount' => $data['limit_amount'],
+                'amount_spent' => $data['amount_spent'] ?? $budget->amount_spent,
+            ]);
+        } catch (QueryException $e) {
+            $message = 'This category already has a budget this month.';
+
+            return $request->expectsJson()
+                ? response()->json(['message' => $message], 422)
+                : back()->withErrors(['category_id' => $message]);
+        }
 
         if ($request->expectsJson()) {
             return response()->json($budget->load('category'));
@@ -119,7 +140,7 @@ class BudgetController extends Controller
 
     public function destroy(Request $request, Budget $budget)
     {
-        abort_if($budget->user_id !== auth()->id(), 403);  // remove if budgets has no user_id column
+        abort_if($budget->user_id !== auth()->id(), 403);
 
         $budget->delete();
 

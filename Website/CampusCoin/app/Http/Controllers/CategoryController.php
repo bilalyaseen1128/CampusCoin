@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
+use App\Models\Budget;
 use App\Models\Category;
 
 class CategoryController extends Controller
@@ -154,10 +156,17 @@ class CategoryController extends Controller
     {
         $category = $this->editableCategoryQuery()->findOrFail($id);
 
-        $category->delete();
+        // Category ke saath uske budgets bhi hatao, warna budget-goal page
+        // par "Attempt to read property name on null" error aata hai.
+        // Dono kaam ek saath hon (ya dono na hon) is liye transaction.
+        DB::transaction(function () use ($category) {
+            Budget::where('category_id', $category->id)->delete();
+
+            $category->delete();
+        });
 
         return redirect()
             ->route('categories.index')
-            ->with('success', 'Category deleted successfully.');
+            ->with('success', 'Category and its budgets deleted successfully.');
     }
 }

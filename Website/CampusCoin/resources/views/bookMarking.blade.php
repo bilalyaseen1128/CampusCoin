@@ -7,7 +7,7 @@
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>Campus Coin - Bookmarks, Notes & Sharing</title>
+    <title>Campus Coin - Bookmarks & Notes</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -137,37 +137,21 @@
         .hero-copy > p:last-child { max-width: 650px; margin-bottom: 0; color: #cbd9e0; }
 
         /* Buttons */
-        .primary-btn, .secondary-btn {
+        .primary-btn {
             min-height: 45px; border-radius: 9px; padding: 10px 17px; font-weight: 800; border: none;
             transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
         }
         .primary-btn { border: 1px solid var(--mint-500); background: var(--mint-500); color: #ffffff; }
         .primary-btn:hover { background: var(--navy-800); transform: translateY(-1px); }
-        .secondary-btn { border: 1px solid var(--border); background: var(--card); color: var(--text); }
-        .secondary-btn:hover { border-color: var(--mint-500); transform: translateY(-1px); }
+        .primary-btn:disabled { opacity: .6; cursor: not-allowed; transform: none; }
         .hero-btn { min-width: 160px; }
 
-        .small-btn {
-            border: 1px solid var(--border); border-radius: 8px; padding: 9px 12px;
-            background: var(--card); color: var(--text); font-weight: 750;
-        }
-        .small-btn:hover { border-color: var(--mint-500); }
-        .delete-btn:hover { color: var(--danger); border-color: var(--danger); }
-
-        .text-btn {
-            border: none; background: transparent; color: var(--mint-600);
-            padding: 9px 4px; font-size: 0.83rem; font-weight: 800;
-        }
-        .text-btn:hover { color: var(--navy-700); }
-
         /* Sections */
-        .summary-section, .bookmarks-section, .notes-section, .reports-section { padding: 60px 0; }
+        .summary-section, .bookmarks-section, .notes-section { padding: 60px 0; }
         .section-heading {
             display: flex; align-items: end; justify-content: space-between; gap: 25px; margin-bottom: 25px;
         }
-        .section-note, .section-description { color: var(--muted); font-size: 0.88rem; }
-        .section-note { margin: 0; }
-        .section-description { margin: 8px 0 0; max-width: 680px; }
+        .section-note { margin: 0; color: var(--muted); font-size: 0.88rem; }
         .subsection { margin-bottom: 40px; }
         .subsection:last-child { margin-bottom: 0; }
         .subsection-title { margin-bottom: 18px; }
@@ -175,7 +159,7 @@
         .subsection-title p { color: var(--muted); font-size: 0.85rem; }
 
         /* Summary */
-        .summary-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
+        .summary-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
         .summary-card {
             display: flex; gap: 13px; align-items: flex-start; padding: 20px;
             border: 1px solid var(--border); border-radius: 15px; background: var(--card); box-shadow: var(--shadow-soft);
@@ -216,7 +200,7 @@
         .bookmark-btn:disabled { opacity: .6; cursor: not-allowed; }
 
         /* Notes */
-        .notes-section { background: var(--page-alt); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+        .notes-section { background: var(--page-alt); border-top: 1px solid var(--border); }
         .notes-layout { display: grid; grid-template-columns: 0.85fr 1.15fr; gap: 25px; }
         .panel { padding: 25px; border: 1px solid var(--border); border-radius: 16px; background: var(--card); box-shadow: var(--shadow); }
         .panel h3 { font-size: 1.2rem; margin-bottom: 5px; }
@@ -251,14 +235,6 @@
             border-radius: 7px; font-size: 0.75rem; font-weight: 750;
         }
 
-        /* Reports */
-        .reports-section { background: var(--page); }
-        .report-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
-        .report-card { padding: 26px; border: 1px solid var(--border); border-radius: 16px; background: var(--card); box-shadow: var(--shadow); }
-        .report-card h3 { font-size: 1.2rem; margin-bottom: 8px; }
-        .report-card p { color: var(--muted); font-size: 0.87rem; }
-        .report-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 20px; }
-
         /* Empty States */
         .empty-state {
             padding: 44px; border: 1px solid var(--border); border-radius: 16px; background: var(--card);
@@ -276,44 +252,10 @@
             padding-bottom: calc(18px + env(safe-area-inset-bottom, 0px));
         }
         .footer-inner { display: flex; align-items: center; justify-content: space-between; gap: 25px; }
-        .footer-brand { color: var(--mint-400); font-size: 1.1rem; }
         .site-footer p { margin: 3px 0 0; color: #9fb1bc; font-size: 0.82rem; }
         .footer-links { display: flex; flex-wrap: wrap; gap: 19px; }
         .footer-links a { color: #c6d5dc; font-size: 0.83rem; font-weight: 700; }
         .footer-links a:hover { color: var(--mint-400); }
-        .footer-bottom {
-            display: flex; justify-content: space-between; gap: 20px; margin-top: 22px; padding-top: 15px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1); color: #8297a4; font-size: 0.73rem;
-        }
-
-        /* Modal */
-        .modal-backdrop {
-            position: fixed; inset: 0; z-index: 100; display: none; align-items: center; justify-content: center;
-            padding: 20px; background: rgba(3, 14, 24, 0.72);
-        }
-        .modal-backdrop.open { display: flex; }
-        .modal {
-            width: min(500px, 100%); max-height: calc(100vh - 40px); overflow: auto; padding: 25px;
-            border: 1px solid var(--border); border-radius: 17px; background: var(--card);
-            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.25);
-        }
-        .modal-header { display: flex; align-items: start; justify-content: space-between; gap: 15px; margin-bottom: 22px; }
-        .modal-header h2 { margin-bottom: 5px; }
-        .modal-header p:last-child { margin: 0; color: var(--muted); font-size: 0.82rem; }
-        .close-btn {
-            width: 38px; height: 38px; border: 1px solid var(--border); border-radius: 9px;
-            background: var(--card); color: var(--text); font-size: 1rem; line-height: 1;
-            display: flex; align-items: center; justify-content: center;
-        }
-        .close-btn:hover { border-color: var(--mint-500); color: var(--mint-600); }
-        .detail-grid { display: grid; gap: 10px; }
-        .detail-row {
-            display: flex; justify-content: space-between; gap: 20px; padding: 13px 14px;
-            background: var(--page); border: 1px solid var(--border); border-radius: 10px;
-        }
-        .detail-row span:first-child { color: var(--muted); }
-        .detail-row span:last-child { font-weight: 800; }
-        .modal-actions { display: flex; justify-content: flex-end; gap: 9px; margin-top: 18px; }
 
         /* Toast */
         .toast {
@@ -327,7 +269,6 @@
         body:not(.dark) .summary-card,
         body:not(.dark) .insight-card,
         body:not(.dark) .panel,
-        body:not(.dark) .report-card,
         body:not(.dark) .empty-state {
             border-color: rgba(37, 99, 235, 0.18);
             box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.06), 0 10px 30px rgba(16, 24, 40, 0.08);
@@ -335,7 +276,6 @@
         }
 
         @media (max-width: 950px) {
-            .summary-grid { grid-template-columns: repeat(2, 1fr); }
             .card-grid { grid-template-columns: repeat(2, 1fr); }
             .notes-layout { grid-template-columns: 1fr; }
         }
@@ -345,27 +285,20 @@
             .hero { padding: 55px 0 48px; }
             .hero-inner, .section-heading, .footer-inner { align-items: flex-start; flex-direction: column; }
             .hero-btn { width: 100%; }
-            .summary-section, .bookmarks-section, .notes-section, .reports-section { padding: 44px 0; }
-            .summary-grid, .card-grid, .report-grid { grid-template-columns: 1fr; }
-            .footer-bottom { align-items: flex-start; flex-direction: column; }
+            .summary-section, .bookmarks-section, .notes-section { padding: 44px 0; }
+            .summary-grid, .card-grid { grid-template-columns: 1fr; }
         }
 
         @media (max-width: 480px) {
-            .report-actions { flex-direction: column; align-items: stretch; }
-            .report-actions button { width: 100%; }
-            .panel, .report-card, .insight-card { padding: 20px; }
-            .modal-actions { flex-direction: column-reverse; }
-            .modal-actions button { width: 100%; }
+            .panel, .insight-card { padding: 20px; }
         }
 
         @media print {
             body { background: #ffffff; color: #000000; }
-            .site-header, .site-footer, .bookmark-btn, .report-actions, .modal-actions, .close-btn, .toast { display: none !important; }
+            .site-header, .site-footer, .bookmark-btn, .toast { display: none !important; }
             .hero { background: none; color: #000000; padding: 20px 0; }
             .hero .eyebrow { color: #000000; }
-            .summary-section, .bookmarks-section, .notes-section, .reports-section { padding: 20px 0; }
-            .modal-backdrop { position: static; display: block !important; background: none; padding: 0; }
-            .modal { max-height: none; box-shadow: none; border: none; }
+            .summary-section, .bookmarks-section, .notes-section { padding: 20px 0; }
         }
     </style>
 </head>
@@ -382,10 +315,10 @@
 
                 <div class="hero-copy">
                     <p class="eyebrow">Personal Finance</p>
-                    <h1>Bookmarks, Notes & Sharing</h1>
+                    <h1>Bookmarks & Notes</h1>
                     <p>
-                        Save useful financial insights, create personal notes,
-                        and quickly view or share your financial reports.
+                        Save useful financial insights and keep personal notes
+                        in one place.
                     </p>
                 </div>
 
@@ -406,7 +339,7 @@
                         <h2>Your saved items</h2>
                     </div>
                     <p class="section-note">
-                        Bookmarks sync with your Campus Coin account. Notes stay on this device.
+                        Bookmarks and notes are saved to your Campus Coin account.
                     </p>
                 </div>
 
@@ -426,16 +359,7 @@
                         <div>
                             <span>Saved Notes</span>
                             <strong id="summaryNotesCount">0</strong>
-                            <small>Stored on this device</small>
-                        </div>
-                    </article>
-
-                    <article class="summary-card">
-                        <div class="summary-icon"><i class="fa-solid fa-file-lines"></i></div>
-                        <div>
-                            <span>Reports Available</span>
-                            <strong>2</strong>
-                            <small>Monthly &amp; savings</small>
+                            <small>Saved to your account</small>
                         </div>
                     </article>
 
@@ -522,7 +446,7 @@
 
                     <div class="panel">
                         <h3>Add Note</h3>
-                        <p class="panel-description">Create a personal note and save it in your browser.</p>
+                        <p class="panel-description">Create a personal note and save it to your account.</p>
 
                         <form id="noteForm">
                             <div class="field">
@@ -560,43 +484,6 @@
             </div>
         </section>
 
-        <!-- REPORTS -->
-        <section class="reports-section" id="reports">
-            <div class="container">
-
-                <div class="section-heading">
-                    <div>
-                        <p class="eyebrow">Reports & Sharing</p>
-                        <h2>Financial Reports</h2>
-                    </div>
-                </div>
-
-                <div class="report-grid">
-
-                    <article class="report-card">
-                        <span class="card-label">Monthly Report</span>
-                        <h3>Monthly Financial Report</h3>
-                        <p>Review your income, expenses, savings, and spending breakdown.</p>
-                        <div class="report-actions">
-                            <button class="secondary-btn view-report" type="button" data-report="monthly">View Report</button>
-                            <button class="secondary-btn print-report" type="button" data-report="monthly">Export as PDF</button>
-                        </div>
-                    </article>
-
-                    <article class="report-card">
-                        <span class="card-label">Savings Summary</span>
-                        <h3>Savings Summary</h3>
-                        <p>Check your current savings, monthly target, progress, and remaining amount.</p>
-                        <div class="report-actions">
-                            <button class="secondary-btn view-report" type="button" data-report="savings">View Summary</button>
-                            <button class="secondary-btn print-report" type="button" data-report="savings">Export as PDF</button>
-                        </div>
-                    </article>
-
-                </div>
-            </div>
-        </section>
-
     </main>
 
  <!-- ================= FOOTER ================= -->
@@ -617,25 +504,6 @@
     </div>
 
 </footer>
-
-    <!-- REPORT MODAL -->
-    <div class="modal-backdrop" id="reportModal" aria-hidden="true">
-        <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-            <div class="modal-header">
-                <div>
-                    <p class="eyebrow">Financial Details</p>
-                    <h2 id="modalTitle">Report</h2>
-                </div>
-                <button class="close-btn" id="closeModal" type="button" aria-label="Close modal">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-            </div>
-            <div id="modalContent"></div>
-            <div class="modal-actions">
-                <button class="primary-btn" id="modalPrint" type="button">Save as PDF</button>
-            </div>
-        </div>
-    </div>
 
     <div id="toast" class="toast">Action completed.</div>
 
@@ -848,72 +716,6 @@
                 document.getElementById("notes").scrollIntoView({ behavior: "smooth" });
                 noteTitle.focus();
             });
-
-            /* ---------- Reports (backed by /api/reports — real data) ---------- */
-            let reportData = {};
-            const reportButtons = document.querySelectorAll(".view-report, .print-report");
-
-            async function loadReportData() {
-                reportButtons.forEach(btn => btn.disabled = true);
-                try {
-                    const res = await fetch('/api/reports', { headers: { 'Accept': 'application/json' } });
-                    if (!res.ok) throw new Error('Failed to load reports');
-                    reportData = await res.json();
-                    reportButtons.forEach(btn => btn.disabled = false);
-                } catch (err) {
-                    console.error(err);
-                    showToast("Could not load report data.");
-                }
-            }
-
-            loadReportData();
-
-            const reportModal = document.getElementById("reportModal");
-            const modalTitle = document.getElementById("modalTitle");
-            const modalContent = document.getElementById("modalContent");
-            const closeModalBtn = document.getElementById("closeModal");
-            const modalPrint = document.getElementById("modalPrint");
-
-            function openReport(reportType) {
-                const report = reportData[reportType];
-                if (!report) return;
-
-                modalTitle.textContent = report.title;
-
-                let html = '<div class="detail-grid">';
-                report.rows.forEach(row => {
-                    html += `<div class="detail-row"><span>${row[0]}</span><span>${row[1]}</span></div>`;
-                });
-                html += "</div>";
-                modalContent.innerHTML = html;
-
-                reportModal.classList.add("open");
-                reportModal.setAttribute("aria-hidden", "false");
-            }
-
-            function closeReportModal() {
-                reportModal.classList.remove("open");
-                reportModal.setAttribute("aria-hidden", "true");
-            }
-
-            document.querySelectorAll(".view-report").forEach(btn => {
-                btn.addEventListener("click", () => openReport(btn.dataset.report));
-            });
-            document.querySelectorAll(".print-report").forEach(btn => {
-                btn.addEventListener("click", () => {
-                    openReport(btn.dataset.report);
-                    setTimeout(() => window.print(), 300);
-                });
-            });
-
-            closeModalBtn.addEventListener("click", closeReportModal);
-            reportModal.addEventListener("click", (event) => {
-                if (event.target === reportModal) closeReportModal();
-            });
-            document.addEventListener("keydown", (event) => {
-                if (event.key === "Escape") closeReportModal();
-            });
-            modalPrint.addEventListener("click", () => window.print());
         })();
     </script>
 

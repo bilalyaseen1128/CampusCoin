@@ -9,25 +9,14 @@
     <meta property="og:description" content="Track spending, set budget goals, and build better saving habits — built for student life.">
     <meta property="og:type" content="website">
     <meta name="theme-color" content="#2563eb">
-    <link rel="icon" type="image/jpeg" href="{{ asset('img/Logo.jpeg') }}">
+    <link rel="icon" type="image/png" href="{{ asset('img/Logo.jpeg') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-    <!-- Apply saved/system theme BEFORE first paint (prevents light flash) -->
-    <script>
-        (function () {
-            var saved = null;
-            try { saved = localStorage.getItem('cc-theme'); } catch (e) {}
-            var dark = saved ? saved === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
-            document.documentElement.classList.toggle('dark', dark);
-        })();
-    </script>
-
     <style>
         :root {
-            color-scheme: light;
             --bg: #eef2fb;
             --card-bg: #ffffff;
             --text: #101828;
@@ -50,9 +39,7 @@
             --transition: 0.25s ease;
         }
 
-        html.dark,
         body.dark {
-            color-scheme: dark;
             --bg: #0a0f1e;
             --card-bg: #111a2e;
             --text: #eef1f8;
@@ -74,7 +61,7 @@
         }
 
         * { box-sizing: border-box; }
-        html { background: var(--bg); -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+        html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
 
         @media (prefers-reduced-motion: reduce) {
             html { scroll-behavior: auto; }
@@ -145,9 +132,7 @@
         .theme-toggle:hover { transform: translateY(-3px) scale(1.05); }
         .theme-toggle:active { transform: translateY(0) scale(0.96); }
         .theme-toggle .fa-sun { display: none; color: var(--star); }
-        html.dark .theme-toggle .fa-moon,
         body.dark .theme-toggle .fa-moon { display: none; }
-        html.dark .theme-toggle .fa-sun,
         body.dark .theme-toggle .fa-sun { display: inline-block; }
 
         /* ---------- Hero ---------- */
@@ -409,39 +394,31 @@
         .cta-section p { font-size: 14px; color: rgba(255,255,255,.8); margin: 0 0 28px; }
 
         /* ---------- Footer ---------- */
-        .site-footer {
-            background: var(--navbar);
+        footer {
             border-top: 1px solid var(--border);
+            padding: 40px 20px 28px;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 12.5px;
         }
 
-        .site-footer .footer-inner {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 24px 35px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 20px;
-            flex-wrap: wrap;
+        footer .footer-brand {
+            font-weight: 800;
+            color: var(--text);
+            margin-bottom: 10px;
+            font-size: 14px;
         }
 
-        .site-footer .footer-copy { color: var(--text-light); font-size: 12px; }
-
-        .site-footer .footer-links {
+        footer .footer-links {
             display: flex;
-            align-items: center;
-            flex-wrap: wrap;
+            justify-content: center;
             gap: 18px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
         }
 
-        .site-footer .footer-links a {
-            color: var(--text-light);
-            font-size: 12px;
-            text-decoration: none;
-            transition: color .2s ease;
-        }
-
-        .site-footer .footer-links a:hover { color: var(--primary); }
+        footer .footer-links a { text-decoration: none; color: var(--text-muted); font-weight: 600; }
+        footer .footer-links a:hover { color: var(--primary); }
 
         /* ---------- Responsive ---------- */
         @media (max-width: 1024px) {
@@ -452,7 +429,6 @@
 
         @media (max-width: 700px) {
             .categories-grid { grid-template-columns: repeat(3, 1fr); }
-            .site-footer .footer-inner { padding: 22px 20px; }
         }
 
         @media (max-width: 560px) {
@@ -474,11 +450,6 @@
 <body>
 
     @include('nav')
-
-    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle dark mode" aria-pressed="false">
-        <i class="fa-solid fa-moon" aria-hidden="true"></i>
-        <i class="fa-solid fa-sun" aria-hidden="true"></i>
-    </button>
 
     <section class="hero">
         <div class="hero-content">
@@ -697,56 +668,19 @@
         </div>
     </section>
 
-    <!-- ================= FOOTER ================= -->
-    <footer class="site-footer">
-        <div class="footer-inner">
-            <span class="footer-copy">© 2026 CampusCoin. All Rights Reserved.</span>
-
-            <div class="footer-links">
-                <a href="/dashboard">Dashboard</a>
-                <a href="/income-expense">Income & Expenses</a>
-                <a href="/budgets-goal">Budget Goals</a>
-                <a href="/report-insights">Reports</a>
-                <a href="/saving-tips">Saving Tips</a>
-            </div>
+    <footer>
+        <div class="footer-brand">CampusCoin</div>
+        <div class="footer-links">
+            <a href="{{ url('/') }}">Home</a>
+            <a href="{{ url('/register') }}">Get Started</a>
+            <a href="{{ url('/login') }}">Sign In</a>
         </div>
+        <p>&copy; {{ date('Y') }} CampusCoin. All rights reserved.</p>
     </footer>
 
     <script>
         (function () {
-            // ---- Theme toggle ----
-            var html = document.documentElement;
-            var body = document.body;
-            var toggleBtn = document.getElementById('themeToggle');
-            var themeMeta = document.querySelector('meta[name="theme-color"]');
-            var mq = window.matchMedia('(prefers-color-scheme: dark)');
-
-            function applyTheme(isDark) {
-                html.classList.toggle('dark', isDark);
-                body.classList.toggle('dark', isDark); // keeps the nav partial working if it uses body.dark
-                if (toggleBtn) toggleBtn.setAttribute('aria-pressed', String(isDark));
-                if (themeMeta) themeMeta.setAttribute('content', isDark ? '#0a0f1e' : '#2563eb');
-            }
-
-            // Sync with whatever the <head> script already decided
-            applyTheme(html.classList.contains('dark'));
-
-            if (toggleBtn) {
-                toggleBtn.addEventListener('click', function () {
-                    var nowDark = !html.classList.contains('dark');
-                    applyTheme(nowDark);
-                    try { localStorage.setItem('cc-theme', nowDark ? 'dark' : 'light'); } catch (e) {}
-                });
-            }
-
-            // Follow system changes only if the user hasn't chosen manually
-            if (mq.addEventListener) {
-                mq.addEventListener('change', function (e) {
-                    var saved = null;
-                    try { saved = localStorage.getItem('cc-theme'); } catch (err) {}
-                    if (!saved) applyTheme(e.matches);
-                });
-            }
+            // Theme toggle is handled by nav.blade.php (window.ccTheme)
 
             // ---- Scroll reveal ----
             var revealEls = document.querySelectorAll('.reveal');

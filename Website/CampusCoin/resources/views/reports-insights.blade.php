@@ -20,71 +20,63 @@
 
 <style>
 
-:root {
-    --primary: #7c5cff;
-    --primary-dark: #6546e8;
-    --primary-light: #9b83ff;
+        :root {
+            --bg: #eef2fb;
+            --card-bg: #ffffff;
+            --text: #101828;
+            --text-muted: #667085;
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --primary-soft: #e8effe;
+            --border: #e6eaf3;
+            --shadow: rgba(20, 35, 80, .10);
+            --overlay-1: #1d4ed8;
+            --overlay-2: #0b1330;
+            --success: #16a34a;
+            --star: #fbbf24;
 
-    --income: #22c55e;
-    --income-bg: rgba(34, 197, 94, 0.12);
+            --navbar: var(--card-bg);
+            --surface-2: #f3f5fa;
+            --text-light: var(--text-muted);
+            --primary-light: #60a5fa;
+            --expense: #ef4444;
+            --transition: 0.25s ease;
+        }
 
-    --expense: #ef4444;
-    --expense-bg: rgba(239, 68, 68, 0.12);
+        body.dark {
+            --bg: #0a0f1e;
+            --card-bg: #111a2e;
+            --text: #eef1f8;
+            --text-muted: #8a96b3;
+            --primary: #3b82f6;
+            --primary-dark: #2563eb;
+            --primary-soft: #16233f;
+            --border: #202c49;
+            --shadow: rgba(0, 0, 0, .45);
+            --overlay-1: #16327a;
+            --overlay-2: #05070f;
+            --success: #22c55e;
 
-    --warning: #f59e0b;
+            --navbar: var(--card-bg);
+            --surface-2: #1a2540;
+            --text-light: var(--text-muted);
+            --primary-light: #60a5fa;
+            --expense: #f87171;
+        }
 
-    --body: #f5f6fa;
-    --surface: #ffffff;
-    --surface-2: #f8f9fc;
+        /* Old names mapped to the new root variables */
+        body {
+            --body: var(--bg);
+            --surface: var(--card-bg);
+            --radius: 16px;
 
-    --navbar: #ffffff;
+            --income: var(--success);
+            --warning: #f59e0b;
+        }
 
-    --text: #171923;
-    --text-light: #737887;
-
-    --border: #e5e7eb;
-
-    --shadow: 0 10px 30px rgba(20, 20, 40, 0.07);
-
-    --radius: 16px;
-
-    --transition: 0.3s ease;
-}
-
-body.dark {
-    --body: #0f1117;
-    --surface: #181b24;
-    --surface-2: #20242f;
-
-    --navbar: #141720;
-
-    --text: #f5f7fa;
-    --text-light: #a7adba;
-
-    --border: #303542;
-
-    --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
-
-    background: var(--body);
-    color: var(--text);
-}
-
-body.dark .card,
-body.dark .stat-tile {
-    background: var(--surface);
-    border-color: var(--border);
-}
-
-body.dark .btn,
-body.dark .month-input {
-    background: var(--surface-2);
-    color: var(--text);
-    border-color: var(--border);
-}
-
-body.dark .bar {
-    background: linear-gradient(180deg, var(--primary-light), var(--primary));
-}
+        body.dark {
+            --warning: #fbbf24;
+        }
 
 
 /* ================= RESET ================= */
@@ -99,7 +91,7 @@ body {
     transition: background var(--transition), color var(--transition);
 }
 
-button, input { font-family: inherit; }
+button, input, select { font-family: inherit; }
 button { cursor: pointer; }
 a { text-decoration: none; color: inherit; }
 
@@ -123,7 +115,7 @@ a { text-decoration: none; color: inherit; }
     justify-content: space-between;
     gap: 20px;
     flex-wrap: wrap;
-    margin-bottom: 25px;
+    margin-bottom: 20px;
 }
 
 .page-heading h1 {
@@ -135,6 +127,13 @@ a { text-decoration: none; color: inherit; }
 .page-heading p {
     color: var(--text-light);
     font-size: 12px;
+}
+
+.active-filters {
+    margin-top: 6px;
+    color: var(--primary);
+    font-size: 12px;
+    font-weight: 700;
 }
 
 .toolbar {
@@ -153,7 +152,7 @@ a { text-decoration: none; color: inherit; }
     padding: 0 14px;
     border: 1px solid var(--border);
     border-radius: 10px;
-    background: var(--surface);
+    background: var(--surface-2);
     color: var(--text);
     font-size: 12.5px;
     font-weight: 700;
@@ -179,20 +178,63 @@ a { text-decoration: none; color: inherit; }
     color: #ffffff;
 }
 
-.month-input {
+
+/* ================= FILTER BAR ================= */
+
+.filter-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: 0 12px 30px var(--shadow);
+    padding: 18px 20px;
+    margin-bottom: 20px;
+}
+
+.filter-form {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr) auto;
+    gap: 14px;
+    align-items: end;
+}
+
+.filter-field label {
+    display: block;
+    margin-bottom: 6px;
+    color: var(--text-light);
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+
+.filter-field input,
+.filter-field select {
+    width: 100%;
     min-height: 40px;
     padding: 0 12px;
     border: 1px solid var(--border);
     border-radius: 10px;
-    background: var(--surface);
+    background: var(--surface-2);
     color: var(--text);
     font-size: 12.5px;
     font-weight: 600;
 }
 
-.month-input:focus {
+.filter-field input:focus,
+.filter-field select:focus {
     outline: none;
     border-color: var(--primary);
+}
+
+.filter-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.filter-hint {
+    margin-top: 12px;
+    color: var(--text-light);
+    font-size: 11.5px;
 }
 
 
@@ -202,7 +244,7 @@ a { text-decoration: none; color: inherit; }
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: var(--radius);
-    box-shadow: var(--shadow);
+    box-shadow: 0 12px 30px var(--shadow);
     overflow: hidden;
 }
 
@@ -237,7 +279,7 @@ a { text-decoration: none; color: inherit; }
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: var(--radius);
-    box-shadow: var(--shadow);
+    box-shadow: 0 12px 30px var(--shadow);
     padding: 18px 20px;
 }
 
@@ -329,6 +371,8 @@ a { text-decoration: none; color: inherit; }
 
 .meter i.warning { background: var(--warning); }
 .meter i.exceeded { background: var(--expense); }
+.meter i.income { background: var(--income); }
+.meter i.expense { background: var(--expense); }
 
 .budget-meta {
     display: flex;
@@ -339,57 +383,130 @@ a { text-decoration: none; color: inherit; }
     font-size: 11.5px;
 }
 
+.scroll-list {
+    max-height: 360px;
+    overflow-y: auto;
+}
 
-/* ================= CHART ================= */
+
+/* ================= CHARTS (income vs expense pairs) ================= */
+
+.legend {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 22px 0;
+    color: var(--text-light);
+    font-size: 11.5px;
+    font-weight: 700;
+}
+
+.legend span {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.legend i {
+    width: 10px;
+    height: 10px;
+    border-radius: 3px;
+    display: inline-block;
+}
+
+.legend i.income { background: var(--income); }
+.legend i.expense { background: var(--expense); }
+
+.chart-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
 
 .chart {
     display: flex;
     align-items: flex-end;
     justify-content: space-between;
-    gap: 14px;
-    padding: 30px 26px 24px;
-    height: 220px;
+    gap: 10px;
+    padding: 20px 22px 22px;
 }
 
-.chart.daily {
-    gap: 4px;
-    padding: 26px 22px 20px;
-}
+.chart.daily { min-width: 760px; gap: 4px; }
 
-.bar-wrapper {
+.bar-col {
     flex: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-end;
-    height: 100%;
-    gap: 10px;
+    gap: 8px;
     min-width: 0;
 }
 
-.bar {
+.pair {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 3px;
+    height: 150px;
     width: 100%;
-    max-width: 34px;
-    border-radius: 8px 8px 3px 3px;
-    background: linear-gradient(180deg, var(--primary-light), var(--primary));
+}
+
+.pair .bar {
+    flex: 1;
+    max-width: 24px;
+    border-radius: 6px 6px 2px 2px;
     transition: var(--transition);
 }
 
-.chart.daily .bar { border-radius: 4px 4px 2px 2px; max-width: 18px; }
+.chart.daily .pair .bar { max-width: 9px; border-radius: 3px 3px 1px 1px; }
 
-.bar-wrapper:hover .bar {
-    transform: scaleY(1.03);
-    transform-origin: bottom;
-}
+.bar.income { background: linear-gradient(180deg, #4ade80, var(--income)); }
+.bar.expense { background: linear-gradient(180deg, #fca5a5, var(--expense)); }
 
-.bar-wrapper span {
+.bar-col:hover .bar { opacity: 0.8; }
+
+.bar-label {
     color: var(--text-light);
     font-size: 11px;
     font-weight: 600;
-    min-height: 13px;
+    text-align: center;
 }
 
-.chart.daily .bar-wrapper span { font-size: 9.5px; }
+.chart.daily .bar-label { font-size: 9.5px; }
+
+.bar-values {
+    text-align: center;
+    font-size: 10.5px;
+    font-weight: 700;
+    line-height: 1.5;
+}
+
+.bar-values .inc { color: var(--income); display: block; }
+.bar-values .exp { color: var(--expense); display: block; }
+
+.view-toggle {
+    display: inline-flex;
+    gap: 6px;
+}
+
+.view-toggle button {
+    min-height: 32px;
+    padding: 0 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--surface-2);
+    color: var(--text-light);
+    font-size: 12px;
+    font-weight: 700;
+    transition: var(--transition);
+}
+
+.view-toggle button.active {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: #ffffff;
+}
+
+[hidden] { display: none !important; }
 
 .empty-note {
     padding: 22px;
@@ -410,97 +527,13 @@ a { text-decoration: none; color: inherit; }
     transition: background var(--transition);
 }
 
-.footer-inner {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 50px 35px 0;
-}
-
-.footer-columns {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 30px;
-    padding-bottom: 40px;
-    border-bottom: 1px solid var(--border);
-}
-
-.footer-col h4 {
-    font-size: 12px;
-    font-weight: 700;
-    margin-bottom: 18px;
-    letter-spacing: 0.3px;
-}
-
-.footer-col ul {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-.footer-col ul li a {
-    color: var(--text-light);
-    font-size: 12.5px;
-    transition: var(--transition);
-}
-
-.footer-col ul li a:hover { color: var(--primary); }
-
-.footer-bottom {
-    padding: 22px 0 26px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 20px;
-    flex-wrap: wrap;
-}
-
-.footer-locale {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    color: var(--text-light);
-    font-size: 12px;
-    font-weight: 600;
-}
-
-.footer-locale i { color: var(--primary); }
-
-.footer-legal {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 18px;
-}
-
-.footer-legal a { color: var(--text-light); font-size: 11.5px; }
-.footer-legal a:hover { color: var(--primary); }
-.footer-copyright { color: var(--text-light); font-size: 11px; }
-
-.footer-social { display: flex; gap: 10px; }
-
-.footer-social a {
-    width: 36px;
-    height: 36px;
-    border-radius: 10px;
-    border: 1px solid var(--border);
-    background: var(--surface-2);
-    color: var(--text-light);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 13px;
-    transition: var(--transition);
-}
-
-.footer-social a:hover { color: var(--primary); border-color: var(--primary); }
-
 
 /* ================= RESPONSIVE ================= */
 
 @media (max-width: 1100px) {
-    .footer-columns { grid-template-columns: repeat(2, 1fr); gap: 30px 20px; }
     .stat-grid { grid-template-columns: repeat(2, 1fr); }
+    .filter-form { grid-template-columns: repeat(2, 1fr); }
+    .filter-actions { grid-column: 1 / -1; }
 }
 
 @media (max-width: 850px) {
@@ -510,19 +543,14 @@ a { text-decoration: none; color: inherit; }
 @media (max-width: 700px) {
     .report-grid { grid-template-columns: 1fr; }
     .stat-grid { grid-template-columns: 1fr; }
-    .chart { height: 180px; padding: 24px 16px 18px; }
-    .chart.daily { gap: 2px; padding: 22px 10px 16px; }
-    .footer-inner { padding: 40px 20px 0; }
-    .footer-columns { grid-template-columns: 1fr; gap: 26px; }
-    .footer-bottom { flex-direction: column; align-items: flex-start; }
-    .footer-legal { gap: 12px 16px; }
+    .filter-form { grid-template-columns: 1fr; }
 }
 
 
 /* ================= PRINT / SAVE AS PDF ================= */
 
 @media print {
-    nav, header, .navbar, .toolbar, .site-footer { display: none !important; }
+    nav, header, .navbar, .toolbar, .filter-card, .view-toggle, .site-footer { display: none !important; }
 
     body, body.dark { background: #ffffff !important; color: #111111 !important; }
 
@@ -535,8 +563,9 @@ a { text-decoration: none; color: inherit; }
         break-inside: avoid;
     }
 
-    .bar { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-    .meter i { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .scroll-list { max-height: none; overflow: visible; }
+
+    .bar, .meter i { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 }
 </style>
 </head>
@@ -554,43 +583,106 @@ a { text-decoration: none; color: inherit; }
 
         <section class="content">
 
-            <!-- Heading + month picker -->
+            <!-- Heading + navigation -->
             <div class="page-top">
 
                 <div class="page-heading">
                     <h1>Reports & Insights</h1>
-                    <p>Full report for {{ $reportMonth->format('F Y') }} · 1 {{ $reportMonth->format('M') }} to {{ $reportMonth->daysInMonth }} {{ $reportMonth->format('M Y') }}</p>
+                    <p>Full report for {{ $periodLabel }} · {{ $periodSub }}</p>
+
+                    @if(count($activeFilters))
+                        <div class="active-filters">
+                            <i class="fa-solid fa-filter"></i> {{ implode('  ·  ', $activeFilters) }}
+                        </div>
+                    @endif
                 </div>
 
                 <div class="toolbar">
 
-                    <a class="btn" href="{{ url()->current() }}?month={{ $prevMonth }}" title="Previous month">
-                        <i class="fa-solid fa-chevron-left"></i>
-                    </a>
+                    @unless($rangeMode)
+                        <a class="btn" href="{{ url()->current() }}?{{ http_build_query(array_merge($keepFilters, ['month' => $prevMonth])) }}" title="Previous month">
+                            <i class="fa-solid fa-chevron-left"></i>
+                        </a>
 
-                    <form method="GET" action="{{ url()->current() }}">
-                        <input
-                            class="month-input"
-                            type="month"
-                            name="month"
-                            value="{{ $reportMonth->format('Y-m') }}"
-                            max="{{ now()->format('Y-m') }}"
-                            onchange="this.form.submit()"
-                            aria-label="Choose month"
-                        >
-                    </form>
+                        <a class="btn {{ $hasNextMonth ? '' : 'disabled' }}" href="{{ url()->current() }}?{{ http_build_query(array_merge($keepFilters, ['month' => $nextMonth])) }}" title="Next month">
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </a>
+                    @endunless
 
-                    <a class="btn {{ $hasNextMonth ? '' : 'disabled' }}" href="{{ url()->current() }}?month={{ $nextMonth }}" title="Next month">
-                        <i class="fa-solid fa-chevron-right"></i>
-                    </a>
-
-                    <a class="btn" href="{{ url()->current() }}">This month</a>
+                    <a class="btn" href="{{ url()->current() }}{{ count($keepFilters) ? '?' . http_build_query($keepFilters) : '' }}">This month</a>
 
                     <button class="btn btn-primary" type="button" onclick="window.print()">
                         <i class="fa-solid fa-file-pdf"></i> Print report
                     </button>
 
                 </div>
+
+            </div>
+
+
+            <!-- Filters -->
+            <div class="filter-card">
+
+                <form method="GET" action="{{ url()->current() }}" class="filter-form">
+
+                    <div class="filter-field">
+                        <label for="f_month">Month</label>
+                        <input type="month" id="f_month" name="month"
+                               value="{{ $monthValue }}" max="{{ now()->format('Y-m') }}">
+                    </div>
+
+                    <div class="filter-field">
+                        <label for="f_from">Date from</label>
+                        <input type="date" id="f_from" name="date_from"
+                               value="{{ $dateFrom }}" max="{{ now()->format('Y-m-d') }}">
+                    </div>
+
+                    <div class="filter-field">
+                        <label for="f_to">Date to</label>
+                        <input type="date" id="f_to" name="date_to"
+                               value="{{ $dateTo }}" max="{{ now()->format('Y-m-d') }}">
+                    </div>
+
+                    <div class="filter-field">
+                        <label for="f_category">Category</label>
+                        <select id="f_category" name="category_id">
+                            <option value="">All categories</option>
+                            <optgroup label="Expense">
+                                @foreach($filterCategories->where('type', 'expense') as $c)
+                                    <option value="{{ $c->id }}" {{ $selectedCategory == $c->id ? 'selected' : '' }}>{{ $c->name }}</option>
+                                @endforeach
+                            </optgroup>
+                            <optgroup label="Income">
+                                @foreach($filterCategories->where('type', 'income') as $c)
+                                    <option value="{{ $c->id }}" {{ $selectedCategory == $c->id ? 'selected' : '' }}>{{ $c->name }}</option>
+                                @endforeach
+                            </optgroup>
+                        </select>
+                    </div>
+
+                    <div class="filter-field">
+                        <label for="f_source">Income source</label>
+                        <select id="f_source" name="income_source">
+                            <option value="">All sources</option>
+                            @foreach($incomeSources as $s)
+                                <option value="{{ $s->id }}" {{ $selectedSource == $s->id ? 'selected' : '' }}>{{ $s->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="filter-actions">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fa-solid fa-magnifying-glass"></i> Apply
+                        </button>
+                        <a href="{{ url()->current() }}" class="btn">Clear</a>
+                    </div>
+
+                </form>
+
+                <p class="filter-hint">
+                    Date from / to dalne par mahine ki jagah yehi period use hota hai.
+                    Income source sirf income ko mehdood karta hai, expenses waise hi rehte hain.
+                </p>
 
             </div>
 
@@ -606,9 +698,9 @@ a { text-decoration: none; color: inherit; }
                             <span class="{{ $incomeChange >= 0 ? 'trend-down' : 'trend-up' }}">
                                 {{ $incomeChange >= 0 ? '▲' : '▼' }} {{ abs($incomeChange) }}%
                             </span>
-                            vs last month
+                            {{ $compareLabel }}
                         @else
-                            No income last month to compare
+                            No income before this period to compare
                         @endif
                     </small>
                 </div>
@@ -621,9 +713,9 @@ a { text-decoration: none; color: inherit; }
                             <span class="{{ $expenseChange <= 0 ? 'trend-down' : 'trend-up' }}">
                                 {{ $expenseChange >= 0 ? '▲' : '▼' }} {{ abs($expenseChange) }}%
                             </span>
-                            vs last month
+                            {{ $compareLabel }}
                         @else
-                            No expenses last month to compare
+                            No expenses before this period to compare
                         @endif
                     </small>
                 </div>
@@ -639,7 +731,6 @@ a { text-decoration: none; color: inherit; }
                 <div class="stat-tile">
                     <span>Transactions</span>
                     <strong>{{ $txCount }}</strong>
-                    <small>Average spend ₨{{ number_format($avgDaily, 0) }} per day</small>
                 </div>
 
             </div>
@@ -651,7 +742,7 @@ a { text-decoration: none; color: inherit; }
                 <div class="card">
                     <div class="card-header">
                         <h2>Financial Summary</h2>
-                        <small>{{ $reportMonth->format('F Y') }}</small>
+                        <small>{{ $periodLabel }}</small>
                     </div>
 
                     <div class="report-item">
@@ -675,10 +766,15 @@ a { text-decoration: none; color: inherit; }
                     </div>
 
                     <div class="report-item">
+                        <span>Average daily spending</span>
+                        <strong>₨{{ number_format($avgDailySpend, 0) }}</strong>
+                    </div>
+
+                    <div class="report-item">
                         <span>Highest spending day</span>
                         <strong>
                             @if($highestDay)
-                                {{ $highestDay['day'] }} {{ $reportMonth->format('M') }} · ₨{{ number_format($highestDay['total'], 0) }}
+                                {{ $highestDay['label'] }} · ₨{{ number_format($highestDay['total'], 0) }}
                             @else
                                 —
                             @endif
@@ -686,125 +782,223 @@ a { text-decoration: none; color: inherit; }
                     </div>
                 </div>
 
-                <!-- Top categories -->
+                <!-- Expenses by category (all categories) -->
                 <div class="card">
                     <div class="card-header">
-                        <h2>Top Spending Categories</h2>
+                        <h2>Expenses by Category</h2>
                         <small>Share of total expenses</small>
                     </div>
 
-                    @forelse($topCategories as $cat)
-                        <div class="cat-row">
-                            <div class="cat-row-top">
-                                <span>{{ $cat->category_name }}</span>
-                                <div>
-                                    <strong>₨{{ number_format($cat->total, 0) }}</strong>
-                                    <em>{{ $cat->share }}%</em>
+                    <div class="scroll-list">
+                        @forelse($expenseCategories as $cat)
+                            <div class="cat-row">
+                                <div class="cat-row-top">
+                                    <span>{{ $cat->category_name }}</span>
+                                    <div>
+                                        <strong>₨{{ number_format($cat->total, 0) }}</strong>
+                                        <em>{{ $cat->share }}%</em>
+                                    </div>
                                 </div>
+                                <div class="meter"><i class="expense" style="width: {{ min($cat->share, 100) }}%"></i></div>
                             </div>
-                            <div class="meter"><i style="width: {{ min($cat->share, 100) }}%"></i></div>
-                        </div>
-                    @empty
-                        <p class="empty-note">
-                            No expenses recorded in {{ $reportMonth->format('F Y') }}.
-                        </p>
-                    @endforelse
+                        @empty
+                            <p class="empty-note">
+                                No expenses found for {{ $periodLabel }}.
+                            </p>
+                        @endforelse
+                    </div>
                 </div>
 
             </div>
 
 
-            <!-- Daily spending: the whole month -->
-            <div class="card section-gap">
-                <div class="card-header">
-                    <h2>Daily Spending</h2>
-                    <small>Day 1 to {{ $reportMonth->daysInMonth }}</small>
+            <div class="report-grid section-gap">
+
+                <!-- Income by category / source -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Income by Source</h2>
+                        <small>Share of total income</small>
+                    </div>
+
+                    <div class="scroll-list">
+                        @forelse($incomeCategories as $cat)
+                            <div class="cat-row">
+                                <div class="cat-row-top">
+                                    <span>{{ $cat->category_name }}</span>
+                                    <div>
+                                        <strong>₨{{ number_format($cat->total, 0) }}</strong>
+                                        <em>{{ $cat->share }}%</em>
+                                    </div>
+                                </div>
+                                <div class="meter"><i class="income" style="width: {{ min($cat->share, 100) }}%"></i></div>
+                            </div>
+                        @empty
+                            <p class="empty-note">
+                                No income found for {{ $periodLabel }}.
+                            </p>
+                        @endforelse
+                    </div>
                 </div>
 
-                @if(collect($dailyChart)->sum('total') > 0)
+                <!-- Budgets vs actual -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Budget vs Actual</h2>
+                        <small>{{ $periodLabel }} budgets</small>
+                    </div>
 
-                    <div class="chart daily">
-                        @foreach($dailyChart as $d)
-                            <div class="bar-wrapper" title="{{ $d['day'] }} {{ $reportMonth->format('M') }}: ₨{{ number_format($d['total'], 0) }}">
-                                <div class="bar" style="height: {{ max($d['height'], 2) }}%"></div>
-                                <span>{{ $d['label'] }}</span>
+                    <div class="scroll-list">
+                        @forelse($budgetReport as $b)
+                            <div class="cat-row">
+                                <div class="cat-row-top">
+                                    <span>{{ $b->name }}</span>
+                                    <div>
+                                        <strong>₨{{ number_format($b->spent, 0) }} / ₨{{ number_format($b->limit, 0) }}</strong>
+                                        <em>{{ $b->usage }}%</em>
+                                    </div>
+                                </div>
+
+                                <div class="meter">
+                                    <i class="{{ $b->status === 'ok' ? '' : $b->status }}" style="width: {{ min($b->usage, 100) }}%"></i>
+                                </div>
+
+                                <div class="budget-meta">
+                                    <span>
+                                        @if($b->status === 'exceeded')
+                                            Over budget by ₨{{ number_format(abs($b->remaining), 0) }}
+                                        @elseif($b->status === 'warning')
+                                            Near limit
+                                        @else
+                                            On track
+                                        @endif
+                                    </span>
+                                    <span>
+                                        @if($b->remaining >= 0)
+                                            ₨{{ number_format($b->remaining, 0) }} left
+                                        @endif
+                                    </span>
+                                </div>
                             </div>
-                        @endforeach
+                        @empty
+                            <p class="empty-note">No budgets found for {{ $periodLabel }}.</p>
+                        @endforelse
+                    </div>
+                </div>
+
+            </div>
+
+
+            <!-- 6 month income vs expense -->
+            <div class="card section-gap">
+                <div class="card-header">
+                    <h2>Income vs Expenses</h2>
+                    <small>Last 6 months{{ $rangeMode ? ' (up to end of range)' : '' }}</small>
+                </div>
+
+                @if(collect($monthlyChart)->sum('income') + collect($monthlyChart)->sum('expense') > 0)
+
+                    <div class="legend">
+                        <span><i class="income"></i> Income</span>
+                        <span><i class="expense"></i> Expenses</span>
+                    </div>
+
+                    <div class="chart-scroll">
+                        <div class="chart">
+                            @foreach($monthlyChart as $m)
+                                <div class="bar-col"
+                                     title="{{ $m['label'] }} · Income ₨{{ number_format($m['income'], 0) }} · Expenses ₨{{ number_format($m['expense'], 0) }}">
+                                    <div class="pair">
+                                        <div class="bar income" style="height: {{ $m['income_h'] }}%"></div>
+                                        <div class="bar expense" style="height: {{ $m['expense_h'] }}%"></div>
+                                    </div>
+                                    <div class="bar-label">{{ $m['label'] }}</div>
+                                    <div class="bar-values">
+                                        <span class="inc">₨{{ number_format($m['income'] / 1000, 1) }}k</span>
+                                        <span class="exp">₨{{ number_format($m['expense'] / 1000, 1) }}k</span>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
                     </div>
 
                 @else
 
-                    <p class="empty-note">No spending recorded in {{ $reportMonth->format('F Y') }}.</p>
+                    <p class="empty-note">No history yet to chart.</p>
 
                 @endif
             </div>
 
 
-            <!-- Budgets vs actual -->
+            <!-- Daily / weekly breakdown -->
             <div class="card section-gap">
                 <div class="card-header">
-                    <h2>Budget vs Actual</h2>
-                    <small>{{ $reportMonth->format('F Y') }} budgets</small>
+                    <h2>Daily & Weekly Breakdown</h2>
+
+                    <div class="view-toggle">
+                        @if($showDaily)
+                            <button type="button" class="active" data-view="daily">Daily</button>
+                            <button type="button" data-view="weekly">Weekly</button>
+                        @else
+                            <button type="button" class="active" data-view="weekly">Weekly</button>
+                        @endif
+                    </div>
                 </div>
 
-                @forelse($budgetReport as $b)
-                    <div class="cat-row">
-                        <div class="cat-row-top">
-                            <span>{{ $b->name }}</span>
-                            <div>
-                                <strong>₨{{ number_format($b->spent, 0) }} / ₨{{ number_format($b->limit, 0) }}</strong>
-                                <em>{{ $b->usage }}%</em>
+                @if($txCount > 0)
+
+                    <div class="legend">
+                        <span><i class="income"></i> Income</span>
+                        <span><i class="expense"></i> Expenses</span>
+                    </div>
+
+                    @if($showDaily)
+                        <!-- Daily -->
+                        <div class="chart-scroll" id="view-daily">
+                            <div class="chart daily" style="min-width: {{ max(760, count($dailyChart) * 24) }}px;">
+                                @foreach($dailyChart as $d)
+                                    <div class="bar-col"
+                                         title="{{ $d['full'] }} · Income ₨{{ number_format($d['income'], 0) }} · Expenses ₨{{ number_format($d['expense'], 0) }}">
+                                        <div class="pair">
+                                            <div class="bar income" style="height: {{ $d['income_h'] }}%"></div>
+                                            <div class="bar expense" style="height: {{ $d['expense_h'] }}%"></div>
+                                        </div>
+                                        <div class="bar-label">{{ $d['label'] }}</div>
+                                    </div>
+                                @endforeach
                             </div>
                         </div>
+                    @endif
 
-                        <div class="meter">
-                            <i class="{{ $b->status === 'ok' ? '' : $b->status }}" style="width: {{ min($b->usage, 100) }}%"></i>
-                        </div>
-
-                        <div class="budget-meta">
-                            <span>
-                                @if($b->status === 'exceeded')
-                                    Over budget by ₨{{ number_format(abs($b->remaining), 0) }}
-                                @elseif($b->status === 'warning')
-                                    Near limit
-                                @else
-                                    On track
-                                @endif
-                            </span>
-                            <span>
-                                @if($b->remaining >= 0)
-                                    ₨{{ number_format($b->remaining, 0) }} left
-                                @endif
-                            </span>
+                    <!-- Weekly -->
+                    <div class="chart-scroll" id="view-weekly" {{ $showDaily ? 'hidden' : '' }}>
+                        <div class="chart" style="min-width: {{ max(0, (count($weeklyChart) - 6) * 80) ?: 0 }}px;">
+                            @foreach($weeklyChart as $w)
+                                <div class="bar-col"
+                                     title="{{ $w['full'] }} · Income ₨{{ number_format($w['income'], 0) }} · Expenses ₨{{ number_format($w['expense'], 0) }}">
+                                    <div class="pair">
+                                        <div class="bar income" style="height: {{ $w['income_h'] }}%"></div>
+                                        <div class="bar expense" style="height: {{ $w['expense_h'] }}%"></div>
+                                    </div>
+                                    <div class="bar-label">{{ $w['label'] }}</div>
+                                    <div class="bar-values">
+                                        <span class="inc">+₨{{ number_format($w['income'], 0) }}</span>
+                                        <span class="exp">-₨{{ number_format($w['expense'], 0) }}</span>
+                                    </div>
+                                </div>
+                            @endforeach
                         </div>
                     </div>
-                @empty
-                    <p class="empty-note">No budgets were set for {{ $reportMonth->format('F Y') }}.</p>
-                @endforelse
-            </div>
 
-
-            <!-- 6 month overview -->
-            <div class="card section-gap">
-                <div class="card-header">
-                    <h2>Monthly Spending Overview</h2>
-                    <small>Last 6 months</small>
-                </div>
-
-                @if(collect($monthlyChart)->sum('total') > 0)
-
-                    <div class="chart">
-                        @foreach($monthlyChart as $m)
-                            <div class="bar-wrapper" title="{{ $m['label'] }}: ₨{{ number_format($m['total'], 0) }}">
-                                <div class="bar" style="height: {{ max($m['height'], 3) }}%"></div>
-                                <span>{{ $m['label'] }}</span>
-                            </div>
-                        @endforeach
-                    </div>
+                    @unless($showDaily)
+                        <p class="filter-hint" style="padding: 0 22px 18px;">
+                            Period 62 din se lamba hai, is liye sirf weekly view dikhaya ja raha hai.
+                        </p>
+                    @endunless
 
                 @else
 
-                    <p class="empty-note">No spending history yet to chart.</p>
+                    <p class="empty-note">No transactions found for {{ $periodLabel }}.</p>
 
                 @endif
             </div>
@@ -814,27 +1008,62 @@ a { text-decoration: none; color: inherit; }
     </main>
 
 
- <!-- ================= FOOTER ================= -->
-<footer class="site-footer" style="background:var(--navbar); border-top:1px solid var(--border);">
+    <!-- ================= FOOTER ================= -->
+    <footer class="site-footer" style="background:var(--navbar); border-top:1px solid var(--border);">
 
-    <div class="footer-inner" style="max-width:1400px; margin:0 auto; padding:24px 35px; display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap;">
+        <div class="footer-inner" style="max-width:1400px; margin:0 auto; padding:24px 35px; display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap;">
 
-        <span style="color:var(--text-light); font-size:12px;">© 2026 CampusCoin. All Rights Reserved.</span>
+            <span style="color:var(--text-light); font-size:12px;">© 2026 CampusCoin. All Rights Reserved.</span>
 
-        <div class="footer-links" style="display:flex; align-items:center; flex-wrap:wrap; gap:18px;">
-            <a href="/dashboard" style="color:var(--text-light); font-size:12px;">Dashboard</a>
-            <a href="/income-expense" style="color:var(--text-light); font-size:12px;">Income & Expenses</a>
-            <a href="/budgets-goal" style="color:var(--text-light); font-size:12px;">Budget Goals</a>
-            <a href="/report-insights" style="color:var(--text-light); font-size:12px;">Reports</a>
-            <a href="/saving-tips" style="color:var(--text-light); font-size:12px;">Saving Tips</a>
+            <div class="footer-links" style="display:flex; align-items:center; flex-wrap:wrap; gap:18px;">
+                <a href="/dashboard" style="color:var(--text-light); font-size:12px;">Dashboard</a>
+                <a href="/income-expense" style="color:var(--text-light); font-size:12px;">Income & Expenses</a>
+                <a href="/budgets-goal" style="color:var(--text-light); font-size:12px;">Budget Goals</a>
+                <a href="/report-insights" style="color:var(--text-light); font-size:12px;">Reports</a>
+                <a href="/saving-tips" style="color:var(--text-light); font-size:12px;">Saving Tips</a>
+            </div>
+
         </div>
 
-    </div>
-
-</footer>
+    </footer>
 
 
     <!-- JavaScript -->
+    <script>
+        // Daily / Weekly toggle
+        document.querySelectorAll('.view-toggle button').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                var view = btn.dataset.view;
+
+                document.querySelectorAll('.view-toggle button').forEach(function (b) {
+                    b.classList.toggle('active', b === btn);
+                });
+
+                var daily  = document.getElementById('view-daily');
+                var weekly = document.getElementById('view-weekly');
+
+                if (daily)  daily.hidden  = view !== 'daily';
+                if (weekly) weekly.hidden = view !== 'weekly';
+            });
+        });
+
+        // Date range chuni jaye to month khali kar do (dono ek saath na jayein)
+        (function () {
+            var month = document.getElementById('f_month');
+            var from  = document.getElementById('f_from');
+            var to    = document.getElementById('f_to');
+
+            function sync() {
+                if (from.value || to.value) { month.value = ''; }
+            }
+
+            from.addEventListener('change', sync);
+            to.addEventListener('change', sync);
+            month.addEventListener('change', function () {
+                if (month.value) { from.value = ''; to.value = ''; }
+            });
+        })();
+    </script>
     <script src="{{ asset('js/script.js') }}" defer></script>
 
 </body>

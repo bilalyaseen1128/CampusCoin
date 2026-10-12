@@ -15,91 +15,76 @@
 
     <style>
         :root {
-            --navy-950: #5b3fd6;
-            --navy-900: #6546e8;
-            --navy-800: #7c5cff;
-            --navy-700: #9b83ff;
+            --bg: #eef2fb;
+            --card-bg: #ffffff;
+            --text: #101828;
+            --text-muted: #667085;
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --primary-soft: #e8effe;
+            --border: #e6eaf3;
+            --shadow: rgba(20, 35, 80, .10);
+            --overlay-1: #1d4ed8;
+            --overlay-2: #0b1330;
+            --success: #16a34a;
+            --star: #fbbf24;
 
-            --mint-600: #7c5cff;
-            --mint-500: #7c5cff;
-            --mint-400: #9b83ff;
-            --mint-100: rgba(124, 92, 255, 0.12);
-
-            --page: #f5f6fa;
-            --page-alt: #f8f9fc;
-            --card: #ffffff;
-
-            --text: #171923;
-            --muted: #737887;
-            --border: #e5e7eb;
-
-            --warning: #f59e0b;
-            --warning-bg: rgba(245, 158, 11, 0.12);
-
-            --danger: #ef4444;
-            --danger-bg: rgba(239, 68, 68, 0.12);
-
-            --shadow: 0 10px 30px rgba(20, 20, 40, 0.07);
-            --shadow-soft: 0 6px 18px rgba(20, 20, 40, 0.05);
-
-            --navbar: var(--card);
-            --primary: var(--mint-600);
-            --primary-light: var(--mint-400);
-            --surface-2: var(--page-alt);
-            --text-light: var(--muted);
-            --expense: var(--danger);
-
+            --navbar: var(--card-bg);
+            --surface-2: #f3f5fa;
+            --text-light: var(--text-muted);
+            --primary-light: #60a5fa;
+            --expense: #ef4444;
             --transition: 0.25s ease;
         }
 
         body.dark {
-            --page: #0f1117;
-            --page-alt: #20242f;
-            --card: #181b24;
+            --bg: #0a0f1e;
+            --card-bg: #111a2e;
+            --text: #eef1f8;
+            --text-muted: #8a96b3;
+            --primary: #3b82f6;
+            --primary-dark: #2563eb;
+            --primary-soft: #16233f;
+            --border: #202c49;
+            --shadow: rgba(0, 0, 0, .45);
+            --overlay-1: #16327a;
+            --overlay-2: #05070f;
+            --success: #22c55e;
 
-            --text: #f5f7fa;
-            --muted: #a7adba;
-            --border: #303542;
+            --navbar: var(--card-bg);
+            --surface-2: #1a2540;
+            --text-light: var(--text-muted);
+            --primary-light: #60a5fa;
+            --expense: #f87171;
+        }
 
-            --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
-            --shadow-soft: 0 8px 22px rgba(0, 0, 0, 0.24);
+        /* Old names mapped to the new root variables */
+        body {
+            --page: var(--bg);
+            --page-alt: var(--surface-2);
+            --card: var(--card-bg);
+            --muted: var(--text-muted);
 
-            --navbar: var(--card);
-            --primary: var(--mint-600);
-            --primary-light: var(--mint-400);
-            --surface-2: var(--page-alt);
-            --text-light: var(--muted);
-            --expense: var(--danger);
+            --mint-100: var(--primary-soft);
+            --mint-400: var(--primary-light);
+            --mint-500: var(--primary);
+            --mint-600: var(--primary);
+
+            --navy-800: var(--primary-dark);
+            --navy-950: var(--overlay-2);
+
+            --warning: #f59e0b;
+            --warning-bg: #fef3c7;
+            --danger: var(--expense);
+            --danger-bg: #fdecec;
+
+            --shadow-soft: 0 8px 22px var(--shadow);
         }
 
         body.dark {
-            --page: #0a0f1e;
-            --page-alt: #0d1526;
-            --card: #111a2e;
-            --text: #eef1f8;
-            --muted: #8a96b3;
-            --border: #202c49;
-
-            --mint-100: #16233f;
-            --mint-400: #60a5fa;
-            --mint-600: #3b82f6;
-            --mint-500: #3b82f6;
-
             --warning: #fbbf24;
             --warning-bg: #3a2b0c;
-
-            --danger: #f87171;
             --danger-bg: #3a1717;
-
-            --shadow: 0 18px 42px rgba(0, 0, 0, 0.24);
-            --shadow-soft: 0 8px 22px rgba(0, 0, 0, 0.2);
-
-            --navbar: var(--card);
-            --primary: var(--mint-600);
-            --primary-light: var(--mint-400);
-            --surface-2: var(--page-alt);
-            --text-light: var(--muted);
-            --expense: var(--danger);
         }
 
         * { box-sizing: border-box; }
@@ -133,7 +118,7 @@
         /* Hero */
 
         .hero {
-            background: linear-gradient(135deg, var(--navy-950), var(--navy-800));
+            background: linear-gradient(150deg, var(--overlay-1), var(--overlay-2));
             color: #ffffff;
             padding: 76px 0 72px;
         }
@@ -251,7 +236,7 @@
 
         .summary-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(4, minmax(0, 1fr));
             gap: 15px;
         }
 
@@ -265,6 +250,8 @@
             background: var(--card);
             box-shadow: var(--shadow-soft);
         }
+
+        .summary-card > div:last-child { min-width: 0; }
 
         .summary-icon {
             width: 39px;
@@ -293,7 +280,8 @@
             display: block;
             margin: 3px 0 2px;
             color: var(--text);
-            font-size: 1.5rem;
+            font-size: clamp(1.15rem, 2.2vw, 1.5rem);
+            overflow-wrap: anywhere;
         }
 
         .summary-card small {
@@ -305,18 +293,22 @@
 
         .overview-panel {
             display: grid;
-            grid-template-columns: 1fr 310px;
+            grid-template-columns: minmax(0, 1fr) minmax(0, 380px);
             gap: 30px;
             margin-top: 18px;
             padding: 25px;
+            overflow: hidden;
             border: 1px solid var(--border);
             border-radius: 16px;
             background: var(--card);
             box-shadow: var(--shadow-soft);
         }
 
+        .overview-panel > * { min-width: 0; }
+
         .panel-heading {
             display: flex;
+            flex-wrap: wrap;
             justify-content: space-between;
             align-items: end;
             gap: 20px;
@@ -328,6 +320,7 @@
         .panel-heading > strong {
             color: var(--mint-600);
             font-size: 1.25rem;
+            white-space: nowrap;
         }
 
         .progress-track {
@@ -353,11 +346,12 @@
 
         .overview-details {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
             gap: 10px;
         }
 
         .overview-details div {
+            min-width: 0;
             padding: 12px;
             border: 1px solid var(--border);
             border-radius: 10px;
@@ -372,7 +366,8 @@
         .overview-details strong {
             display: block;
             margin-top: 4px;
-            font-size: 0.98rem;
+            font-size: clamp(0.82rem, 1.4vw, 0.98rem);
+            overflow-wrap: anywhere;
         }
 
         /* Setup */
@@ -392,7 +387,7 @@
             border: 1px solid var(--border);
             border-radius: 16px;
             background: var(--card);
-            box-shadow: var(--shadow);
+            box-shadow: 0 18px 42px var(--shadow);
         }
 
         .field {
@@ -475,7 +470,7 @@
             border: 1px solid var(--border);
             border-radius: 16px;
             background: var(--card);
-            box-shadow: var(--shadow);
+            box-shadow: 0 18px 42px var(--shadow);
         }
 
         .budget-card-header {
@@ -523,12 +518,13 @@
 
         .stats-row {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(2, minmax(0, 1fr));
             gap: 12px;
             margin: 22px 0 19px;
         }
 
         .stat {
+            min-width: 0;
             padding: 14px;
             border: 1px solid var(--border);
             border-radius: 10px;
@@ -542,7 +538,10 @@
             margin-bottom: 4px;
         }
 
-        .stat strong { font-size: 1.03rem; }
+        .stat strong {
+            font-size: 1.03rem;
+            overflow-wrap: anywhere;
+        }
 
         .progress-label {
             display: flex;
@@ -845,8 +844,8 @@
         .hidden { display: none !important; }
 
         @media (max-width: 950px) {
-            .summary-grid { grid-template-columns: repeat(2, 1fr); }
-            .overview-panel { grid-template-columns: 1fr; }
+            .summary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .overview-panel { grid-template-columns: minmax(0, 1fr); }
             .budget-form { grid-template-columns: 1fr 1fr; }
             .form-btn { grid-column: 1 / -1; }
         }
@@ -874,12 +873,12 @@
             .summary-grid,
             .budget-grid,
             .budget-form {
-                grid-template-columns: 1fr;
+                grid-template-columns: minmax(0, 1fr);
             }
 
             .form-btn { grid-column: auto; }
             .budget-form { padding: 20px; }
-            .overview-details { grid-template-columns: 1fr; }
+            .overview-details { grid-template-columns: minmax(0, 1fr); }
 
             .alert-info-strip,
             .footer-bottom {
@@ -889,7 +888,7 @@
         }
 
         @media (max-width: 480px) {
-            .stats-row { grid-template-columns: 1fr; }
+            .stats-row { grid-template-columns: minmax(0, 1fr); }
 
             .spending-form,
             .card-actions {
@@ -1121,7 +1120,7 @@
                             $limit = (float) $budget->limit_amount;
                             $manualSpent = (float) ($budget->amount_spent ?? 0);
                             $txSpent = (float) ($budget->tx_spent ?? 0);
-                            $spent = $manualSpent + $txSpent;
+                            $spent = (float) $budget->total_spent;   // manual + transactions (from controller)
                             $remaining = $limit - $spent;
 
                             $usage = $limit > 0 ? round(($spent / $limit) * 100) : 0;
@@ -1259,25 +1258,24 @@
     </main>
 
 
-    <!-- FOOTER -->
-<!-- ================= FOOTER ================= -->
-<footer class="site-footer" style="background:var(--navbar); border-top:1px solid var(--border);">
+    <!-- ================= FOOTER ================= -->
+    <footer class="site-footer" style="background:var(--navbar); border-top:1px solid var(--border);">
 
-    <div class="footer-inner" style="max-width:1400px; margin:0 auto; padding:24px 35px; display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap;">
+        <div class="footer-inner" style="max-width:1400px; margin:0 auto; padding:24px 35px; display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap;">
 
-        <span style="color:var(--text-light); font-size:12px;">© 2026 CampusCoin. All Rights Reserved.</span>
+            <span style="color:var(--text-light); font-size:12px;">© 2026 CampusCoin. All Rights Reserved.</span>
 
-        <div class="footer-links" style="display:flex; align-items:center; flex-wrap:wrap; gap:18px;">
-            <a href="/dashboard" style="color:var(--text-light); font-size:12px;">Dashboard</a>
-            <a href="/income-expense" style="color:var(--text-light); font-size:12px;">Income & Expenses</a>
-            <a href="/budgets-goal" style="color:var(--text-light); font-size:12px;">Budget Goals</a>
-            <a href="/report-insights" style="color:var(--text-light); font-size:12px;">Reports</a>
-            <a href="/saving-tips" style="color:var(--text-light); font-size:12px;">Saving Tips</a>
+            <div class="footer-links" style="display:flex; align-items:center; flex-wrap:wrap; gap:18px;">
+                <a href="/dashboard" style="color:var(--text-light); font-size:12px;">Dashboard</a>
+                <a href="/income-expense" style="color:var(--text-light); font-size:12px;">Income & Expenses</a>
+                <a href="/budgets-goal" style="color:var(--text-light); font-size:12px;">Budget Goals</a>
+                <a href="/report-insights" style="color:var(--text-light); font-size:12px;">Reports</a>
+                <a href="/saving-tips" style="color:var(--text-light); font-size:12px;">Saving Tips</a>
+            </div>
+
         </div>
 
-    </div>
-
-</footer>
+    </footer>
 
     <!-- MODAL -->
     <div class="modal-backdrop" id="budgetModal" aria-hidden="true">
@@ -1360,6 +1358,7 @@
                 'limit_amount' => $b->limit_amount,
                 'amount_spent' => $b->amount_spent,
                 'tx_spent' => $b->tx_spent ?? 0,
+                'total_spent' => $b->total_spent ?? 0,
             ];
         })->values();
     @endphp
@@ -1424,8 +1423,9 @@
             };
 
             // Total spent = manually logged spending + expense transactions of this month
+            // (calculated in BudgetController::index as total_spent)
             const spentOf = function (budget) {
-                return (Number(budget.amount_spent) || 0) + (Number(budget.tx_spent) || 0);
+                return Number(budget.total_spent) || 0;
             };
 
             const findBudget = function (id) {
@@ -1638,8 +1638,7 @@
 
                     body: JSON.stringify({
                         category_id: Number(categoryId),
-                        limit_amount: Number(amount),
-                        amount_spent: 0
+                        limit_amount: Number(amount)
                     })
                 });
 

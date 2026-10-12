@@ -11,36 +11,49 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
 <style>
-:root {
-  --primary: #7c5cff;
-  --primary-dark: #6546e8;
-  --primary-light: #9b83ff;
+        :root {
+            --bg: #eef2fb;
+            --card-bg: #ffffff;
+            --text: #101828;
+            --text-muted: #667085;
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --primary-soft: #e8effe;
+            --border: #e6eaf3;
+            --shadow: rgba(20, 35, 80, .10);
+            --overlay-1: #1d4ed8;
+            --overlay-2: #0b1330;
+            --success: #16a34a;
+            --star: #fbbf24;
 
-  --income: #22c55e;
-  --income-bg: rgba(34, 197, 94, 0.12);
+            --navbar: var(--card-bg);
+            --surface-2: #f3f5fa;
+            --text-light: var(--text-muted);
+            --primary-light: #60a5fa;
+            --expense: #ef4444;
+            --transition: 0.25s ease;
+        }
 
-  --expense: #ef4444;
-  --expense-bg: rgba(239, 68, 68, 0.12);
+        body.dark {
+            --bg: #0a0f1e;
+            --card-bg: #111a2e;
+            --text: #eef1f8;
+            --text-muted: #8a96b3;
+            --primary: #3b82f6;
+            --primary-dark: #2563eb;
+            --primary-soft: #16233f;
+            --border: #202c49;
+            --shadow: rgba(0, 0, 0, .45);
+            --overlay-1: #16327a;
+            --overlay-2: #05070f;
+            --success: #22c55e;
 
-  --amber: #f59e0b;
-  --amber-bg: rgba(245, 158, 11, 0.12);
-
-  --body: #f5f6fa;
-  --surface: #ffffff;
-  --surface-2: #f8f9fc;
-  --navbar: #ffffff;
-
-  --text: #171923;
-  --text-light: #737887;
-
-  --border: #e5e7eb;
-  --shadow: 0 10px 30px rgba(20, 20, 40, 0.07);
-  --radius: 16px;
-  --transition: 0.25s ease;
-
-  padding-top: env(safe-area-inset-top, 0px);
-  padding-bottom: env(safe-area-inset-bottom, 0px);
-}
+            --navbar: var(--card-bg);
+            --surface-2: #1a2540;
+            --text-light: var(--text-muted);
+            --primary-light: #60a5fa;
+            --expense: #f87171;
+        }
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {

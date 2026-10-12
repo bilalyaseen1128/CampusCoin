@@ -626,9 +626,179 @@
         background: linear-gradient(90deg, var(--primary), var(--primary-dark));
     }
 
+    /* ---------- Quick add ---------- */
+    .quick-add {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-bottom: 24px;
+    }
+
+    .quick-add-label {
+        font-size: 12.5px;
+        font-weight: 700;
+        color: var(--text-muted);
+        margin-right: 4px;
+    }
+
+    .quick-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 9px 14px;
+        border-radius: 999px;
+        border: 1px solid var(--border);
+        background: var(--card-bg);
+        color: var(--text);
+        font-size: 12.5px;
+        font-weight: 600;
+        font-family: inherit;
+        cursor: pointer;
+        transition: background .15s, color .15s, border-color .15s;
+    }
+
+    .quick-btn:hover { background: var(--primary-soft); color: var(--primary); border-color: var(--primary); }
+    .quick-btn.income i { color: var(--income); }
+    .quick-btn.expense i { color: var(--expense); }
+
+    .quick-sep { width: 1px; height: 22px; background: var(--border); }
+
+    /* ---------- Insights row (top categories + tips) ---------- */
+    .insights-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 18px;
+        margin-top: 18px;
+    }
+
+    .top-cat { margin-bottom: 16px; }
+    .top-cat:last-child { margin-bottom: 0; }
+
+    .top-cat-row {
+        display: flex;
+        justify-content: space-between;
+        font-size: 13px;
+        margin-bottom: 6px;
+    }
+
+    .top-cat-row strong { font-weight: 700; }
+    .top-cat-row span { color: var(--text-muted); font-variant-numeric: tabular-nums; }
+
+    .top-cat.first .progress-fill { background: linear-gradient(90deg, var(--expense), #f87171); }
+
+    .tip {
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+        padding: 12px;
+        border-radius: 12px;
+        margin-bottom: 10px;
+        font-size: 13px;
+        line-height: 1.5;
+    }
+
+    .tip:last-child { margin-bottom: 0; }
+    .tip i { margin-top: 3px; }
+    .tip.warning { background: var(--warning-soft); color: var(--warning); }
+    .tip.success { background: var(--income-soft); color: var(--income); }
+    .tip.info { background: var(--primary-soft); color: var(--primary); }
+    .tip span { color: var(--text); }
+
+    /* ---------- Quick add modal ---------- */
+    .qa-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(10, 15, 30, .55);
+        backdrop-filter: blur(4px);
+        align-items: center;
+        justify-content: center;
+        z-index: 500;
+        padding: 20px;
+    }
+
+    .qa-overlay.show { display: flex; }
+
+    .qa-modal {
+        width: 100%;
+        max-width: 460px;
+        max-height: 90vh;
+        overflow-y: auto;
+        background: var(--card-bg);
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        padding: 24px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, .25);
+    }
+
+    .qa-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 18px;
+    }
+
+    .qa-head h2 { margin: 0; font-size: 18px; font-weight: 800; }
+
+    .qa-close {
+        width: 34px;
+        height: 34px;
+        border-radius: 9px;
+        border: 1px solid var(--border);
+        background: var(--bg);
+        color: var(--text-muted);
+        cursor: pointer;
+    }
+
+    .qa-field { margin-bottom: 14px; }
+
+    .qa-field label {
+        display: block;
+        margin-bottom: 6px;
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+    .qa-field input,
+    .qa-field select {
+        width: 100%;
+        height: 42px;
+        padding: 0 12px;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        background: var(--bg);
+        color: var(--text);
+        font-family: inherit;
+        font-size: 13px;
+        outline: none;
+    }
+
+    .qa-field input:focus,
+    .qa-field select:focus { border-color: var(--primary); }
+
+    .qa-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-top: 18px;
+    }
+
+    .qa-cancel {
+        padding: 10px 16px;
+        border-radius: 10px;
+        border: 1px solid var(--border);
+        background: var(--bg);
+        color: var(--text);
+        font-weight: 600;
+        font-family: inherit;
+        cursor: pointer;
+    }
+
     /* ---------- Responsive ---------- */
     @media (max-width: 980px) {
         .dashboard-grid { grid-template-columns: 1fr; }
+        .insights-grid { grid-template-columns: 1fr; }
         .stats-grid { grid-template-columns: repeat(2, 1fr); }
     }
 
@@ -800,6 +970,29 @@
                 </div>
             </div>
 
+            {{-- ======================= QUICK ADD ======================= --}}
+            <div class="quick-add">
+                <span class="quick-add-label">Quick add:</span>
+
+                <button type="button" class="quick-btn expense" data-quick data-type="expense">
+                    <i class="fa-solid fa-arrow-up"></i> Expense
+                </button>
+                <button type="button" class="quick-btn income" data-quick data-type="income">
+                    <i class="fa-solid fa-arrow-down"></i> Income
+                </button>
+
+                @if($quickCategories->isNotEmpty())
+                    <span class="quick-sep"></span>
+                @endif
+
+                @foreach($quickCategories as $qc)
+                    <button type="button" class="quick-btn {{ $qc->type }}"
+                            data-quick data-type="{{ $qc->type }}" data-category="{{ $qc->id }}">
+                        <i class="fa-solid fa-plus"></i> {{ $qc->name }}
+                    </button>
+                @endforeach
+            </div>
+
             <div class="dashboard-grid">
 
                 {{-- ======================= INCOME vs EXPENSE CHART (PURE CSS — NO JS LIBRARY) ======================= --}}
@@ -917,9 +1110,108 @@
 
             </div>
 
+            <div class="insights-grid">
+
+                {{-- ======================= TOP CATEGORIES ======================= --}}
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Top Spending Categories</h2>
+                        <a href="/report-insights">Details <i class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+
+                    @forelse($topCategories as $cat)
+                        <div class="top-cat {{ $loop->first ? 'first' : '' }}">
+                            <div class="top-cat-row">
+                                <strong>{{ $loop->first ? '🔥 ' : '' }}{{ $cat['name'] }}</strong>
+                                <span>₨{{ number_format($cat['total'], 0) }} · {{ $cat['percent'] }}%</span>
+                            </div>
+                            <div class="progress-track">
+                                <div class="progress-fill" style="width: {{ $cat['percent'] }}%"></div>
+                            </div>
+                        </div>
+                    @empty
+                        <p style="color:var(--text-muted); font-size:13px; margin:0;">
+                            No expenses recorded this month yet.
+                        </p>
+                    @endforelse
+                </div>
+
+                {{-- ======================= SMART TIPS ======================= --}}
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Smart Tips</h2>
+                        <a href="/saving-tips">More tips <i class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+
+                    @foreach($tips as $tip)
+                        <div class="tip {{ $tip['type'] }}">
+                            <i class="fa-solid {{ $tip['icon'] }}"></i>
+                            <span>{{ $tip['text'] }}</span>
+                        </div>
+                    @endforeach
+                </div>
+
+            </div>
+
         </section>
     </main>
 
+</div>
+
+<!-- ======================= QUICK ADD MODAL ======================= -->
+<div class="qa-overlay" id="quickModal">
+    <div class="qa-modal">
+
+        <div class="qa-head">
+            <h2>Quick Add</h2>
+            <button type="button" class="qa-close" id="quickClose" aria-label="Close">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <form action="{{ route('transactions.store') }}" method="POST">
+            @csrf
+
+            <div class="qa-field">
+                <label for="qa_type">Type</label>
+                <select id="qa_type" name="type" required>
+                    <option value="expense">Expense</option>
+                    <option value="income">Income</option>
+                </select>
+            </div>
+
+            <div class="qa-field">
+                <label for="qa_category">Category</label>
+                <select id="qa_category" name="category_id" required>
+                    <option value="">Select Category</option>
+                    @foreach($categories as $category)
+                        <option value="{{ $category->id }}" data-type="{{ $category->type }}">{{ $category->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+
+            <div class="qa-field">
+                <label for="qa_amount">Amount (₨)</label>
+                <input type="number" id="qa_amount" name="amount" min="0.01" max="99999999.99" step="0.01" placeholder="e.g. 500" required>
+            </div>
+
+            <div class="qa-field">
+                <label for="qa_description">Description</label>
+                <input type="text" id="qa_description" name="description" maxlength="255" placeholder="e.g. Lunch" required>
+            </div>
+
+            <div class="qa-field">
+                <label for="qa_date">Date</label>
+                <input type="date" id="qa_date" name="transaction_date" value="{{ now()->format('Y-m-d') }}" required>
+            </div>
+
+            <div class="qa-actions">
+                <button type="button" class="qa-cancel" id="quickCancel">Cancel</button>
+                <button type="submit" class="add-btn"><i class="fa-solid fa-plus"></i> Add</button>
+            </div>
+        </form>
+
+    </div>
 </div>
 
 <script>
@@ -955,6 +1247,43 @@
         sidebar.classList.remove('open');
         overlay.classList.remove('show');
     });
+
+    // ---- Quick add modal ----
+    const qModal   = document.getElementById('quickModal');
+    const qType    = document.getElementById('qa_type');
+    const qCat     = document.getElementById('qa_category');
+    const qAmount  = document.getElementById('qa_amount');
+
+    function qFilterCategories() {
+        let valid = false;
+        qCat.querySelectorAll('option[data-type]').forEach(opt => {
+            const ok = opt.dataset.type === qType.value;
+            opt.hidden = !ok;
+            opt.disabled = !ok;
+            if (ok && opt.value === qCat.value) valid = true;
+        });
+        if (!valid) qCat.value = '';
+    }
+
+    function qOpen(type, category) {
+        qType.value = type || 'expense';
+        qFilterCategories();
+        qCat.value = category || '';
+        qModal.classList.add('show');
+        qAmount.focus();
+    }
+
+    function qClose() { qModal.classList.remove('show'); }
+
+    document.querySelectorAll('[data-quick]').forEach(btn => {
+        btn.addEventListener('click', () => qOpen(btn.dataset.type, btn.dataset.category));
+    });
+
+    qType.addEventListener('change', qFilterCategories);
+    document.getElementById('quickClose').addEventListener('click', qClose);
+    document.getElementById('quickCancel').addEventListener('click', qClose);
+    qModal.addEventListener('click', e => { if (e.target === qModal) qClose(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') qClose(); });
 </script>
 
 </body>

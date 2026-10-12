@@ -18,18 +18,12 @@ use App\Http\Controllers\Admin\AdminAuthController;
 
 
 // =========================
-// PUBLIC PAGES
+// PUBLIC PAGES (only Home and About)
 // =========================
 
 Route::get('/', function () {
     return view('home');
 })->name('home');
-
-Route::get('/report-insights', [ReportInsightsController::class, 'index'])
-    ->name('reports.insights');
-
-Route::get('/saving-tips', [SavingTipsController::class, 'index'])
-    ->name('saving.tips');
 
 Route::get('/about', function () {
     return view('about');
@@ -88,6 +82,7 @@ Route::post('/admin/logout', [AdminAuthController::class, 'logout'])
 
 // =========================
 // LOGGED-IN USER ROUTES ('web' guard)
+// Everything except Home / About / Login / Register needs login.
 // =========================
 
 Route::middleware('auth')->group(function () {
@@ -102,9 +97,33 @@ Route::middleware('auth')->group(function () {
     Route::put('/profile', [ProfileController::class, 'update'])
         ->name('profile.update');
 
+    // change password
+    Route::put('/profile/password', [ProfileController::class, 'updatePassword'])
+        ->name('profile.password');
+
+    // delete account
+    Route::delete('/profile', [ProfileController::class, 'destroy'])
+        ->name('profile.destroy');
+
     // -------- DASHBOARD --------
     Route::get('/dashboard', [DashboardController::class, 'index'])
         ->name('dashboard');
+
+    // -------- REPORT INSIGHTS / SAVING TIPS --------
+    Route::get('/report-insights', [ReportInsightsController::class, 'index'])
+        ->name('reports.insights');
+
+    Route::get('/saving-tips', [SavingTipsController::class, 'index'])
+        ->name('saving.tips');
+
+    // -------- BOOKMARK PAGE --------
+    Route::get('/bookMarking', function () {
+        return view('bookMarking');
+    })->name('bookMarking');
+
+    Route::get('/bookmarks', function () {
+        return view('bookMarking');
+    })->name('bookmarks.index');
 
     // -------- CATEGORIES --------
     Route::get('/categories', [CategoryController::class, 'index'])
@@ -142,6 +161,15 @@ Route::middleware('auth')->group(function () {
 
     Route::delete('/income-expense/{id}', [TransactionController::class, 'destroy'])
         ->name('transactions.destroy');
+
+    // -------- RECURRING TRANSACTIONS --------
+    // Pause / resume a rule
+    Route::patch('/recurring-transactions/{id}/toggle', [TransactionController::class, 'toggleRecurring'])
+        ->name('recurring.toggle');
+
+    // Delete a rule (past transactions are kept)
+    Route::delete('/recurring-transactions/{id}', [TransactionController::class, 'destroyRecurring'])
+        ->name('recurring.destroy');
 
     // -------- BUDGET GOALS --------
     Route::get('/budgets-goal', [BudgetController::class, 'index'])
@@ -231,16 +259,3 @@ Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
         ->name('users.destroy');
 
 });
-
-
-// =========================
-// BOOKMARK PAGE
-// =========================
-
-Route::get('/bookMarking', function () {
-    return view('bookMarking');
-})->name('bookMarking');
-
-Route::get('/bookmarks', function () {
-    return view('bookMarking');
-})->name('bookmarks.index');
